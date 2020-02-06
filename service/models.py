@@ -1,4 +1,12 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
+
+def validate_positive(value):
+    if value < 0:
+        raise ValidationError(
+            f'{value}s is not a positive number'
+        )
 
 
 class Deals(models.Model):
@@ -8,8 +16,15 @@ class Deals(models.Model):
     item = models.CharField(
         max_length=100
     )
-    total = models.IntegerField()
-    quantity = models.IntegerField()
+    total = models.DecimalField(
+        validators=[validate_positive],
+        decimal_places=2,
+        max_digits=20,
+        verbose_name='Деньги'
+    )
+    quantity = models.PositiveSmallIntegerField(
+        verbose_name='Количество'
+    )
     date = models.DateTimeField()
 
     def __str__(self):

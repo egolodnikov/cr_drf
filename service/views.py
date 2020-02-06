@@ -20,7 +20,6 @@ class CsvView(APIView):
                 'quantity': row.get('quantity'),
                 'date': row.get('date'),
             }
-            print(data)
             serializer = DealsSerializer(data=data)
             if serializer.is_valid(raise_exception=True):
                 deal_saved = serializer.save()
